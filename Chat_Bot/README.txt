@@ -9,7 +9,7 @@ Commands:
 !quote = Random quote from quotes.txt (Everyone)
 !addquote = Adds a quote to quotes.txt (Mod only)
 !commands = A list of the custom commands for your bot (Everyone)
-!quit = Makes the bot leave (Channel owner only)
+!quit = Quits the program (Channel owner only)
 
 Feel free to contact me at:
 twitter = @TheMartonfi
