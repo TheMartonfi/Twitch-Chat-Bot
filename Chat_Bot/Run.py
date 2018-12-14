@@ -17,7 +17,7 @@ def basicCommand(input, output):
 
 #Adds a basic command to commands.txt
 def addCommand(input):
-    if input in message and user in moderators:
+    if input in message and user == CHANNEL:
         writeCommand = open("commands.txt", "a")
         commandMessage = getMessage(line)
         command = commandMessage.split(input, 1)[-1].strip()
@@ -34,11 +34,11 @@ def addCommand(input):
             sendMessage(s, "Error: Invalid syntax for adding commands.")
             cooldown()
     elif input in message:
-        sendMessage(s, "Error: Only moderators can use this command.")
+        sendMessage(s, "Error: Only the channel owner can use this command.")
         cooldown()
 
 #Delete commands from chat.
-if input in message and user in moderators:
+if input in message and user == CHANNEL:
         deleteCommand = open("commands.txt", "r")
         commandList = deleteCommand.readlines()
         deleteCommand.close()
@@ -61,7 +61,7 @@ if input in message and user in moderators:
             sendMessage(s, "Error: Command {} not found.".format(command))
             cooldown()
     elif input in message:
-        sendMessage(s, "Error: Only moderators can use this command.")
+        sendMessage(s, "Error: Only the channel owner can use this command.")
         cooldown()
 
 #Command that works only for specific user.
