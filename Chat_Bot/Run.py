@@ -21,10 +21,14 @@ def addCommand(input):
         writeCommand = open("commands.txt", "a")
         commandMessage = getMessage(line)
         command = commandMessage.split(input, 1)[-1].strip()
-        if command[0] == "!" and ";" in command:
-            writeCommand.write("\n" + command)
-            sendMessage(s, "Command succesfully added.")
-            writeCommand.close()
+        try:
+            if command[0] == "!" and ";" in command:
+                writeCommand.write("\n" + command)
+                sendMessage(s, "Command succesfully added.")
+                writeCommand.close()
+                cooldown()
+        except IndexError as err:
+            sendMessage(s, "Error: Invalid syntax for adding commands.")
             cooldown()
         else:
             sendMessage(s, "Error: Invalid syntax for adding commands.")
@@ -34,21 +38,24 @@ def addCommand(input):
         cooldown()
 
 #Delete commands from chat.
-def deleteCommand(input):
-    if input in message and user in moderators:
+if input in message and user in moderators:
         deleteCommand = open("commands.txt", "r")
         commandList = deleteCommand.readlines()
         deleteCommand.close()
         commandMessage = getMessage(line)
         command = commandMessage.split(input, 1)[-1].strip()
-        if command in str(commandList) and command[0] == "!":
-            for commandLine in commandList:
-                if command in commandLine:
-                    commandList.remove(commandLine)
-            overwriteCommand = open("commands.txt", "w")
-            overwriteCommand.write(str("".join(commandList).strip()))
-            sendMessage(s, "Command succesfully deleted.")
-            overwriteCommand.close()
+        try:
+            if command in str(commandList) and command[0] == "!":
+                for commandLine in commandList:
+                    if command in commandLine:
+                        commandList.remove(commandLine)
+                overwriteCommand = open("commands.txt", "w")
+                overwriteCommand.write(str("".join(commandList).strip()))
+                sendMessage(s, "Command succesfully deleted.")
+                overwriteCommand.close()
+                cooldown()
+        except IndexError as err:
+            sendMessage(s, "Error: Command {} not found.".format(command))
             cooldown()
         else:
             sendMessage(s, "Error: Command {} not found.".format(command))
