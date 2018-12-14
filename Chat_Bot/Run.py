@@ -81,13 +81,17 @@ def userSpecificCommand(input, output, username, userOutput):
 #The !addquote command for twitch chat.
 def addQuoteCommand(input):
     if input in message and user in moderators:
-        writeQuotes = open("quotes.txt", "a")
         quoteMessage = getMessage(line)
         quote = quoteMessage.split(input, 1)[-1].strip()
-        writeQuotes.write("\n" + quote)
-        sendMessage(s, "Quote succesfully added!")
-        writeQuotes.close()
-        cooldown()
+        if quote != "":
+            writeQuotes = open("quotes.txt", "a")
+            writeQuotes.write("\n" + quote)
+            sendMessage(s, "Quote succesfully added!")
+            writeQuotes.close()
+            cooldown()
+        else:
+            sendMessage(s, "Error: Quote cannot be empty.")
+            cooldown()
     elif input in message:
         sendMessage(s, "Error: Only moderators can use this command.")
         cooldown()
