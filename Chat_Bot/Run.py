@@ -9,13 +9,6 @@ from Initialize import joinRoom
 from Settings import CHANNEL
 from Settings import COOLDOWN
 
-#List of Moderators and Chatters
-response = urlopen('https://tmi.twitch.tv/group/user/{}/chatters'.format(CHANNEL))
-readable = response.read().decode('utf-8')
-chatlist = loads(readable)
-chatters = chatlist['chatters']
-moderators = chatters['moderators']
-
 #Basic command for twitch chat.
 def basicCommand(input, output):
     if input == message.strip():
@@ -169,17 +162,24 @@ while True:
 
     for line in temp:
         print(line)
-        #Prevents afk kick from server.
+#Prevents afk kick from server.
         if "PING" in line and Console(line):
             msgg = "PONG tmi.twitch.tv\r\n".encode()
             s.send(msgg)
             print(msgg)
             break
-        #Prints chat lines in a more readable fashion.
+#Prints chat lines in a more readable fashion.
         user = getUser(line)
         message = getMessage(line)
         print(user + " typed: " + message)
 
+#List of Moderators and Chatters
+        response = urlopen('https://tmi.twitch.tv/group/user/{}/chatters'.format(CHANNEL))
+        readable = response.read().decode('utf-8')
+        chatlist = loads(readable)
+        chatters = chatlist['chatters']
+        moderators = chatters['moderators']
+        
 #Makes dict of commands from command.txt
         commands = {}
         listCommand = []
