@@ -18,19 +18,22 @@ def basicCommand(input, output):
 #Adds a basic command to commands.txt
 def addCommand(input):
     if input in message and user == CHANNEL:
+        deleteCommand = open("commands.txt", "r")
+        commandList = deleteCommand.readlines()
+        deleteCommand.close()
         writeCommand = open("commands.txt", "a")
         commandMessage = getMessage(line)
         command = commandMessage.split(input, 1)[-1].strip()
         try:
-            if command[0] == "!" and ";" in command:
+            if command[0] == "!" and ";" in command and command not in str(commandList):
                 writeCommand.write("\n" + command)
                 sendMessage(s, "Command succesfully added.")
                 writeCommand.close()
                 cooldown()
+            else:
+                sendMessage(s, "Error: Missing \"!\" or \";\" or duplicate command.")
+                cooldown()
         except IndexError as err:
-            sendMessage(s, "Error: Invalid syntax for adding commands.")
-            cooldown()
-        else:
             sendMessage(s, "Error: Invalid syntax for adding commands.")
             cooldown()
     elif input in message:
@@ -38,7 +41,8 @@ def addCommand(input):
         cooldown()
 
 #Delete commands from chat.
-if input in message and user == CHANNEL:
+def deleteCommand(input):
+    if input in message and user == CHANNEL:
         deleteCommand = open("commands.txt", "r")
         commandList = deleteCommand.readlines()
         deleteCommand.close()
@@ -54,10 +58,10 @@ if input in message and user == CHANNEL:
                 sendMessage(s, "Command succesfully deleted.")
                 overwriteCommand.close()
                 cooldown()
+            else:
+                sendMessage(s, "Error: Command {} not found.".format(command))
+                cooldown()
         except IndexError as err:
-            sendMessage(s, "Error: Command {} not found.".format(command))
-            cooldown()
-        else:
             sendMessage(s, "Error: Command {} not found.".format(command))
             cooldown()
     elif input in message:
