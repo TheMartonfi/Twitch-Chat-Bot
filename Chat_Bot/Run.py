@@ -11,13 +11,13 @@ from Settings import COOLDOWN
 
 #Basic command for twitch chat.
 def basicCommand(input, output):
-    if input == message.strip():
+    if input == message.strip().lower():
         sendMessage(s, output)
         cooldown()
 
 #Adds a basic command to commands.txt
 def addCommand(input):
-    if input in message and user == CHANNEL:
+    if input in message.lower() and user == CHANNEL:
         deleteCommand = open("commands.txt", "r")
         commandList = deleteCommand.readlines()
         deleteCommand.close()
@@ -42,7 +42,7 @@ def addCommand(input):
 
 #Delete commands from chat.
 def deleteCommand(input):
-    if input in message and user == CHANNEL:
+    if input in message.lower() and user == CHANNEL:
         deleteCommand = open("commands.txt", "r")
         commandList = deleteCommand.readlines()
         deleteCommand.close()
@@ -70,13 +70,13 @@ def deleteCommand(input):
 
 #Command that works only for specific user.
 def userCommand(input, output, username):
-    if input == message.strip() and user == username:
+    if input == message.strip().lower() and user == username:
         sendMessage(s, output)
         cooldown()
 
 #Command that works differently for specific users.
 def userSpecificCommand(input, output, username, userOutput):
-    if input == message.strip() and user == username:
+    if input == message.strip().lower() and user == username:
         sendMessage(s, userOutput)
     elif input == message.strip():
         sendMessage(s, output)
@@ -84,7 +84,7 @@ def userSpecificCommand(input, output, username, userOutput):
 
 #The !addquote command for twitch chat.
 def addQuoteCommand(input):
-    if input in message and user in moderators:
+    if input in message.lower() and user in moderators:
         quoteMessage = getMessage(line)
         quote = quoteMessage.split(input, 1)[-1].strip()
         if quote != "":
@@ -102,7 +102,7 @@ def addQuoteCommand(input):
 
 #Posts a random quote from quotes document.
 def quoteCommand(input):
-    if input == message.strip():
+    if input == message.strip().lower():
         readQuotes = open("quotes.txt", "r")
         quoteList = readQuotes.readlines()
         quoteCount = -1
@@ -122,13 +122,13 @@ def quoteCommand(input):
 
 #Posts all command inputs.
 def getCommands(input):
-    if input == message.strip():
+    if input == message.strip().lower():
         sendMessage(s, "!addcom, " + "!delcom " + "!addquote, " + "!quote, " + "!quit " + ', '.join(listCommand))
         cooldown()
 
 #Posts text from Now Playing.txt.
 def songCommand(input):
-    if input == message.strip():
+    if input == message.strip().lower():
         songFile = open("Now Playing.txt", "r")
         songName = songFile.readline()
         sendMessage(s, songName[3:].title())
@@ -137,7 +137,7 @@ def songCommand(input):
 
 #This makes the bot commit seppuku.
 def quitCommand(input):
-    if input == message.strip() and user == CHANNEL:
+    if input == message.strip().lower() and user == CHANNEL:
         sendMessage(s, "The bot is being terminated.")
         quit()
     elif input == message.strip():
