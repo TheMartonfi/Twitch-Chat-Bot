@@ -9,46 +9,7 @@ from Initialize import joinRoom
 from Settings import CHANNEL
 from Settings import COOLDOWN
 
-#Checks to see if chat line is from twitch or chat.
-def Console(line):
-    if "PRIVMSG" in line:
-        return False
-    else:
-        return True
-
-s = openSocket()
-joinRoom(s)
-readbuffer = ""
-
-#Loop that keeps the chat active and updates chatlines.
-while True:
-    readbuffer = s.recv(1024)
-    readbuffer = readbuffer.decode()
-    temp = readbuffer.split("\n")
-    readbuffer = readbuffer.encode()
-    readbuffer = temp.pop()
-
-    for line in temp:
-        print(line)
-#Prevents afk kick from server.
-        if "PING" in line and Console(line):
-            msgg = "PONG tmi.twitch.tv\r\n".encode()
-            s.send(msgg)
-            print(msgg)
-            break
-#Prints chat lines in a more readable fashion.
-        user = getUser(line)
-        message = getMessage(line)
-        print(user + " typed: " + message)
-
-#List of Moderators and Chatters
-        response = urlopen('https://tmi.twitch.tv/group/user/{}/chatters'.format(CHANNEL))
-        readable = response.read().decode('utf-8')
-        chatlist = loads(readable)
-        chatters = chatlist['chatters']
-        moderators = chatters['moderators']
-        
-        #Basic command for twitch chat.
+#Basic command for twitch chat.
 def basicCommand(input, output):
     if input == message.strip().lower():
         sendMessage(s, output)
@@ -195,6 +156,45 @@ def cooldown():
             if delta >= abort_after:
                 break
 
+#Checks to see if chat line is from twitch or chat.
+def Console(line):
+    if "PRIVMSG" in line:
+        return False
+    else:
+        return True
+
+s = openSocket()
+joinRoom(s)
+readbuffer = ""
+
+#Loop that keeps the chat active and updates chatlines.
+while True:
+    readbuffer = s.recv(1024)
+    readbuffer = readbuffer.decode()
+    temp = readbuffer.split("\n")
+    readbuffer = readbuffer.encode()
+    readbuffer = temp.pop()
+
+    for line in temp:
+        print(line)
+#Prevents afk kick from server.
+        if "PING" in line and Console(line):
+            msgg = "PONG tmi.twitch.tv\r\n".encode()
+            s.send(msgg)
+            print(msgg)
+            break
+#Prints chat lines in a more readable fashion.
+        user = getUser(line)
+        message = getMessage(line)
+        print(user + " typed: " + message)
+
+#List of Moderators and Chatters
+        response = urlopen('https://tmi.twitch.tv/group/user/{}/chatters'.format(CHANNEL))
+        readable = response.read().decode('utf-8')
+        chatlist = loads(readable)
+        chatters = chatlist['chatters']
+        moderators = chatters['moderators']
+        
 #Makes dict of commands from command.txt
         commands = {}
         listCommand = []
