@@ -7,5 +7,8 @@ def getUser(line):
 
 def getMessage(line):
     separate = line.split(":", 2)
-    message = separate[2]
-    return message
+    try:
+        message = separate[2]
+        return message
+    except IndexError as err:
+        pass
